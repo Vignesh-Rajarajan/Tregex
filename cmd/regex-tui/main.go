@@ -12,7 +12,8 @@ import (
 func main() {
 	matcher := parser.NewRegexMatcher()
 	model := tui.NewModel(matcher)
-	if _, err := tea.NewProgram(model).Run(); err != nil {
+	p := tea.NewProgram(model, tea.WithAltScreen(), tea.WithMouseCellMotion())
+	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
 	}
 }

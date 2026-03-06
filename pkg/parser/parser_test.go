@@ -327,9 +327,17 @@ func TestParseEndToEndAlternationAndQuantifier(t *testing.T) {
 		t.Fatalf("unexpected quantifier settings: %+v", quant)
 	}
 
-	alt, ok := quant.Child.(*AlternationNode)
+	group, ok := quant.Child.(*GroupNode)
 	if !ok {
-		t.Fatalf("expected AlternationNode under quantifier, got %T", quant.Child)
+		t.Fatalf("expected GroupNode under quantifier, got %T", quant.Child)
+	}
+	if group.GroupNumber != 1 {
+		t.Fatalf("expected quantifier child to be group #1, got #%d", group.GroupNumber)
+	}
+
+	alt, ok := group.Child.(*AlternationNode)
+	if !ok {
+		t.Fatalf("expected AlternationNode inside group, got %T", group.Child)
 	}
 	if len(alt.Alternatives) != 2 {
 		t.Fatalf("expected 2 alternation options, got %d", len(alt.Alternatives))
@@ -355,8 +363,8 @@ func TestParseEndToEndLookaroundAndAnchors(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected ConcatNode root, got %T", ast)
 	}
-	if len(concat.Children) != 4 {
-		t.Fatalf("expected 4 concat children, got %d", len(concat.Children))
+	if len(concat.Children) != 5 {
+		t.Fatalf("expected 5 concat children, got %d", len(concat.Children))
 	}
 	if _, ok := concat.Children[0].(*AnchorNode); !ok {
 		t.Fatalf("expected AnchorNode first child, got %T", concat.Children[0])
@@ -364,11 +372,25 @@ func TestParseEndToEndLookaroundAndAnchors(t *testing.T) {
 	if _, ok := concat.Children[1].(*LookaheadNode); !ok {
 		t.Fatalf("expected LookaheadNode second child, got %T", concat.Children[1])
 	}
+	lookahead, ok := concat.Children[1].(*LookaheadNode)
+	if !ok {
+		t.Fatalf("expected LookaheadNode second child, got %T", concat.Children[1])
+	}
+	lookaheadConcat, ok := lookahead.Child.(*ConcatNode)
+	if !ok {
+		t.Fatalf("expected lookahead child to be ConcatNode, got %T", lookahead.Child)
+	}
+	if len(lookaheadConcat.Children) != 2 {
+		t.Fatalf("expected lookahead concat to contain 2 chars, got %d", len(lookaheadConcat.Children))
+	}
 	if _, ok := concat.Children[2].(*CharNode); !ok {
 		t.Fatalf("expected CharNode third child, got %T", concat.Children[2])
 	}
-	if _, ok := concat.Children[3].(*AnchorNode); !ok {
-		t.Fatalf("expected AnchorNode fourth child, got %T", concat.Children[3])
+	if _, ok := concat.Children[3].(*CharNode); !ok {
+		t.Fatalf("expected CharNode fourth child, got %T", concat.Children[3])
+	}
+	if _, ok := concat.Children[4].(*AnchorNode); !ok {
+		t.Fatalf("expected AnchorNode fifth child, got %T", concat.Children[4])
 	}
 }
 
