@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strings"
 
-	"regex-parser/internal/tui"
-	"regex-parser/pkg/lexer"
+	"tregex/internal/tui"
+	"tregex/pkg/lexer"
 )
 
 type RegexMatcher struct{}

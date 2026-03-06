@@ -288,7 +288,7 @@ func (m Model) View() string {
 	innerW := leftOuter - 4 // border(2) + padding(2)
 
 	// ── header ────────────────────────────────────────────────────────────────
-	logo := logoStyle.Render("Regex") + logoSpanStyle.Render("Studio")
+	logo := logoSpanStyle.Render("T") + logoStyle.Render("regex")
 	tagline := taglineStyle.Render("Interactive Expression Evaluator")
 	headerLeft := lipgloss.JoinVertical(lipgloss.Left, logo, tagline)
 

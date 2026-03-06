@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"regex-parser/pkg/lexer"
+	"tregex/pkg/lexer"
 )
 
 func TestParse(t *testing.T) {

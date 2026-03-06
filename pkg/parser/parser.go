@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"regex-parser/pkg/lexer"
+	"tregex/pkg/lexer"
 )
 
 type Parser struct {
